@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/231fc4bae4.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="music-player">
+<nav>
+    <div class="circle">
+        <i class="fa-solid fa-angle-left"></i>
+
+    </div>
+
+    <div class="circle">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+</nav>
+<img src="Images/arjith1.jpg" alt="" class="song-img">
+<h1 id="a">Arjith Singh Song's(3)</h1>
+<h1>Ik Vaari Aa</h1>
+<p><b>
+</b>Arijit Singh</p>
+<audio controls id="song">
+    <source src="Images/ik varia.mp3" type="audio/mpeg">
+</audio>
+<input type="range" value="0" id="progress">
+
+    <div class="controls">
+        <div id="backwardButton"><i class="fa-solid fa-backward"></i></div>
+        <div onclick="playPause()"><i class="fa-solid fa-play"id="ctrlIcon"></i></div>
+        <!-- Add an ID to the "forward" button for easier selection -->
+<div id="forwardButton"><i class="fa-solid fa-forward"></i></div>
+
+
+
+
+    </div>
+
+        </div>
+    </div>
+
+    <script>
+        let progress = document.getElementById("progress");
+        let song = document.getElementById("song");
+        let ctrlIcon = document.getElementById("ctrlIcon");
+    
+        const songs = [
+            {
+                title: "Ik Vaari Aa ",
+                artist: "Arijit Singh",
+                source: " Images/ik varia.mp3"
+            },
+            {
+                title: "Channa Mereya",
+                artist: "Arijit Singh",
+                source: "Images/channa merya.mp3 "
+            },
+            {
+                title: "Raabta",
+                artist: "Arijit Singh",
+                source: "Images/raabta.mp3 "
+            },
+        ];
+    
+        let currentSongIndex = 0;
+    
+        function loadCurrentSong() {
+            song.src = songs[currentSongIndex].source;
+            song.load();
+            song.play();
+            ctrlIcon.classList.add("fa-pause");
+            ctrlIcon.classList.remove("fa-play");
+        }
+    
+        function nextSong() {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            loadCurrentSong();
+        }
+    
+        function prevSong() {
+            currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length; // Loop to the last song if at the beginning
+            loadCurrentSong();
+        }
+        function loadCurrentSong() {
+        song.src = songs[currentSongIndex].source;
+        song.load();
+        song.play();
+        ctrlIcon.classList.add("fa-pause");
+        ctrlIcon.classList.remove("fa-play");
+
+        // Update the song title and artist displayed on the page
+        document.querySelector("h1").textContent = songs[currentSongIndex].title;
+        document.querySelector("p").textContent = songs[currentSongIndex].artist;
+    }
+    
+        // Add event listeners to the "forward" and "backward" buttons
+        document.getElementById("forwardButton").addEventListener("click", nextSong);
+        document.getElementById("backwardButton").addEventListener("click", prevSong);
+    
+        song.onloadedmetadata = function () {
+            progress.max = song.duration;
+            progress.value = song.currentTime;
+        }
+    
+        function playPause() {
+            if (ctrlIcon.classList.contains("fa-pause")) {
+                song.pause();
+                ctrlIcon.classList.remove("fa-pause");
+                ctrlIcon.classList.add("fa-play");
+            } else {
+                song.play();
+                ctrlIcon.classList.add("fa-pause");
+                ctrlIcon.classList.remove("fa-play");
+            }
+        }
+    
+        if (song.play()) {
+            setInterval(() => {
+                progress.value = song.currentTime;
+            }, 500);
+        }
+    
+        progress.onchange = function () {
+            song.play();
+            song.currentTime = progress.value;
+            ctrlIcon.classList.add("fa-pause");
+            ctrlIcon.classList.remove("fa-play");
+        }
+    </script>
+    
+    
+</body>
+</html>
